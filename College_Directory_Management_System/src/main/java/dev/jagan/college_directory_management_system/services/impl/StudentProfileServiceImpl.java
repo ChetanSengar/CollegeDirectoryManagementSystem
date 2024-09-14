@@ -1,9 +1,9 @@
-package dev.jagan.college_directory_management_system.services;
+package dev.jagan.college_directory_management_system.services.impl;
 
 import dev.jagan.college_directory_management_system.exceptions.ResourceNotFoundException;
 import dev.jagan.college_directory_management_system.models.StudentProfile;
 import dev.jagan.college_directory_management_system.repositories.StudentProfileRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import dev.jagan.college_directory_management_system.services.StudentProfileService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,22 +13,22 @@ import java.util.Optional;
 public class StudentProfileServiceImpl implements StudentProfileService {
 
 
-    private StudentProfileRepository studentProfileRepository;
+    private final StudentProfileRepository studentProfileRepository;
 
-    public StudentProfileServiceImpl(StudentProfileRepository studentProfileRepository) {
+    public StudentProfileServiceImpl(final StudentProfileRepository studentProfileRepository) {
         this.studentProfileRepository = studentProfileRepository;
     }
 
     @Override
-    public StudentProfile createStudentProfile(StudentProfile studentProfile) {
+    public StudentProfile createStudentProfile(final StudentProfile studentProfile) {
         return studentProfileRepository.save(studentProfile);
     }
 
     @Override
-    public StudentProfile updateStudentProfile(Long id, StudentProfile updatedStudentProfile) {
-        Optional<StudentProfile> existingProfile = studentProfileRepository.findById(id);
+    public StudentProfile updateStudentProfile(final Long id, final StudentProfile updatedStudentProfile) {
+        final Optional<StudentProfile> existingProfile = studentProfileRepository.findById(id);
         if (existingProfile.isPresent()) {
-            StudentProfile profile = existingProfile.get();
+            final StudentProfile profile = existingProfile.get();
             profile.setPhoto(updatedStudentProfile.getPhoto());
             profile.setUser(updatedStudentProfile.getUser());
             profile.setDepartment(updatedStudentProfile.getDepartment());
@@ -40,7 +40,7 @@ public class StudentProfileServiceImpl implements StudentProfileService {
     }
 
     @Override
-    public StudentProfile getStudentProfileById(Long id) {
+    public StudentProfile getStudentProfileById(final Long id) {
         return studentProfileRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("StudentProfile not found with id: " + id));
     }
@@ -51,7 +51,7 @@ public class StudentProfileServiceImpl implements StudentProfileService {
     }
 
     @Override
-    public void deleteStudentProfile(Long id) {
+    public void deleteStudentProfile(final Long id) {
         if (studentProfileRepository.existsById(id)) {
             studentProfileRepository.deleteById(id);
         } else {

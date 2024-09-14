@@ -1,16 +1,26 @@
 package dev.jagan.college_directory_management_system.models;
 
-import jakarta.persistence.Entity;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
 @Entity
-public class FacultyProfile extends BaseModel{
+public class FacultyProfile extends BaseModel {
+    
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private User user;
 
-
+    @Column
     private String photo;
-    private String department;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "department_id", nullable = false)
+    private Department department;
+
+    @Column
+    private String office_hours;
 
 }

@@ -6,5 +6,4 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface StudentProfileRepository extends JpaRepository<StudentProfile, Long> {
-    // Custom query methods if needed
 }

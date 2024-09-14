@@ -1,33 +1,33 @@
-package dev.jagan.college_directory_management_system.services;
+package dev.jagan.college_directory_management_system.services.impl;
 
 import dev.jagan.college_directory_management_system.exceptions.ResourceNotFoundException;
 import dev.jagan.college_directory_management_system.models.AdministratorProfile;
 import dev.jagan.college_directory_management_system.repositories.AdministratorProfileRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import dev.jagan.college_directory_management_system.services.AdministratorProfileService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
-public class AdministratorProfileServiceImpl implements AdministratorProfileService{
+public class AdministratorProfileServiceImpl implements AdministratorProfileService {
 
-    private AdministratorProfileRepository administratorProfileRepository;
+    private final AdministratorProfileRepository administratorProfileRepository;
 
-    public AdministratorProfileServiceImpl(AdministratorProfileRepository administratorProfileRepository) {
+    public AdministratorProfileServiceImpl(final AdministratorProfileRepository administratorProfileRepository) {
         this.administratorProfileRepository = administratorProfileRepository;
     }
 
     @Override
-    public AdministratorProfile createAdministratorProfile(AdministratorProfile administratorProfile) {
+    public AdministratorProfile createAdministratorProfile(final AdministratorProfile administratorProfile) {
         return administratorProfileRepository.save(administratorProfile);
     }
 
     @Override
-    public AdministratorProfile updateAdministratorProfile(Long id, AdministratorProfile updatedAdministratorProfile) {
-        Optional<AdministratorProfile> existingProfile = administratorProfileRepository.findById(id);
+    public AdministratorProfile updateAdministratorProfile(final Long id, final AdministratorProfile updatedAdministratorProfile) {
+        final Optional<AdministratorProfile> existingProfile = administratorProfileRepository.findById(id);
         if (existingProfile.isPresent()) {
-            AdministratorProfile profile = existingProfile.get();
+            final AdministratorProfile profile = existingProfile.get();
             profile.setPhoto(updatedAdministratorProfile.getPhoto());
 //            profile.setUser(updatedAdministratorProfile.getUser());
             profile.setDepartment(updatedAdministratorProfile.getDepartment());
@@ -38,7 +38,7 @@ public class AdministratorProfileServiceImpl implements AdministratorProfileServ
     }
 
     @Override
-    public AdministratorProfile getAdministratorProfileById(Long id) {
+    public AdministratorProfile getAdministratorProfileById(final Long id) {
         return administratorProfileRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("AdministratorProfile not found with id: " + id));
     }
@@ -49,7 +49,7 @@ public class AdministratorProfileServiceImpl implements AdministratorProfileServ
     }
 
     @Override
-    public void deleteAdministratorProfile(Long id) {
+    public void deleteAdministratorProfile(final Long id) {
         if (administratorProfileRepository.existsById(id)) {
             administratorProfileRepository.deleteById(id);
         } else {
